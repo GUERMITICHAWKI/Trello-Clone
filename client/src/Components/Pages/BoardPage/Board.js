@@ -10,6 +10,9 @@ import { getLists } from '../../../Services/boardService';
 import { updateCardOrder, updateListOrder } from '../../../Services/dragAndDropService';
 import LoadingScreen from '../../LoadingScreen';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import Chat from "../../Chat/Chat";
+
+// Inside your return, at the bottom:
 
 const Board = (props) => {
 	/* props.match.params.id */
@@ -60,41 +63,42 @@ const Board = (props) => {
 	};
 
 	return (
-		<>
-			<Navbar searchString={searchString} setSearchString={setSearchString} />
-			<style.Container
-				isImage={isImage}
-				bgImage={isImage ? backgroundImageLink.split('?')[0] : backgroundImageLink}
-			>
-				<TopBar />
-				{(loading || loadingListService) && <LoadingScreen />}
-				<DragDropContext onDragEnd={onDragEnd}>
-					<Droppable droppableId='all-columns' direction='horizontal' type='column'>
-						{(provided, snapshot) => {
-							return (
-								<style.ListContainer {...provided.droppableProps} ref={provided.innerRef}>
-									{!loading &&
-										allLists.map((list, index) => {
-											return (
-												<List
-													searchString={searchString}
-													key={list._id}
-													index={index}
-													info={list}
-													boardId={boardId}
-												/>
-											);
-										})}
-									{provided.placeholder}
-									<AddList boardId={boardId} />
-								</style.ListContainer>
-							);
-						}}
-					</Droppable>
-				</DragDropContext>
-			</style.Container>
-		</>
-	);
+    <>
+        <Navbar searchString={searchString} setSearchString={setSearchString} />
+        <style.Container
+            isImage={isImage}
+            bgImage={isImage ? backgroundImageLink.split('?')[0] : backgroundImageLink}
+        >
+            <TopBar />
+            {(loading || loadingListService) && <LoadingScreen />}
+            <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId='all-columns' direction='horizontal' type='column'>
+                    {(provided, snapshot) => {
+                        return (
+                            <style.ListContainer {...provided.droppableProps} ref={provided.innerRef}>
+                                {!loading &&
+                                    allLists.map((list, index) => {
+                                        return (
+                                            <List
+                                                searchString={searchString}
+                                                key={list._id}
+                                                index={index}
+                                                info={list}
+                                                boardId={boardId}
+                                            />
+                                        );
+                                    })}
+                                {provided.placeholder}
+                                <AddList boardId={boardId} />
+                            </style.ListContainer>
+                        );
+                    }}
+                </Droppable>
+            </DragDropContext>
+        </style.Container>
+        <Chat boardId={boardId} /> {/* ✅ fixed */}
+    </>
+);
 };
 
 export default Board;

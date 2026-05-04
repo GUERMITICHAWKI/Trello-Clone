@@ -1,85 +1,137 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-	background-image: url('https://trello-backgrounds.s3.amazonaws.com/SharedBackground/2400x1600/a651551a5214cb84963366cf9eaacb40/photo-1636207543865-acf3ad382295.jpg');
-	background-position: 50%;
-	background-size: cover;
-	height: 100vh;
-	width: 100vw;
-	position: fixed;
-	top: 0;
-	left: 0;
+  background-color: #f4f5f7;
+  min-height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
 `;
 
-export const Title = styled.h1`
-	cursor: default;
-	font-weight: 400;
-	font-size: 1.5rem;
-	text-align: center;
-	width: 100vw;
-	margin-bottom: 1rem;
-	color: lightblue;
-	text-shadow: 3px 0px 7px rgba(81, 67, 21, 0.8), -3px 0px 7px rgba(81, 67, 21, 0.8),
-		0px 4px 7px rgba(81, 67, 21, 0.8);
-	user-select: none;
+/* ─── Sidebar ─── */
+export const Sidebar = styled.div`
+  width: 240px;
+  min-width: 240px;
+  background: #ffffff;
+  border-right: 1px solid #e2e4e9;
+  height: 100%;
+  padding: 16px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
 `;
 
-export const Wrapper = styled.div`
-	margin-top: 3.1rem;
-	width: 100%;
-	height: calc(100vh - 3.1rem);
-	padding: 1rem;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	flex-wrap: wrap;
-	align-content: flex-start;
-	overflow-y: auto;
+export const SidebarHeader = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 8px 10px 16px 10px;
 `;
 
+export const SidebarItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: ${({ active }) => (active ? '600' : '400')};
+  color: ${({ active }) => (active ? '#0079bf' : '#172b4d')};
+  background: ${({ active }) => (active ? '#e6f2fb' : 'transparent')};
+  cursor: pointer;
+  transition: background 150ms;
+  user-select: none;
+  &:hover {
+    background: ${({ active }) => (active ? '#e6f2fb' : '#f0f1f3')};
+  }
+`;
+
+/* ─── Main content ─── */
+export const MainContent = styled.div`
+  flex: 1;
+  padding: 32px 36px;
+  overflow-y: auto;
+  height: 100%;
+`;
+
+export const SectionTitle = styled.h2`
+  font-size: 16px;
+  font-weight: 700;
+  color: #172b4d;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+`;
+
+export const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  max-width: 1100px;
+`;
+
+/* ─── Board card ─── */
 export const Board = styled.div`
-	color: white;
-	padding: 0.6rem;
-	margin: 0 0.8rem 1rem 0.8rem;
-	width: 200px;
-	height: 120px;
-	border-radius: 5px;
-	${(props) =>
-		props.isImage ? 'background-image: url(' + props.link + ');' : 'background-color: ' + props.link + ';'}
+  color: white;
+  padding: 12px;
+  width: 100%;
+  height: 100px;
+  border-radius: 8px;
+  ${({ isImage, link }) =>
+    isImage
+      ? `background-image: url(${link}); background-size: cover; background-position: center;`
+      : `background-color: ${link};`}
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+  transition: transform 150ms, box-shadow 150ms;
+  position: relative;
+  overflow: hidden;
 
-	background-position: center center;
-	background-size: cover;
-	-webkit-box-shadow: rgba(0, 0, 0, 0.3) 0 1px 3px;
-	-moz-box-shadow: rgba(0, 0, 0, 0.3) 0 1px 3px;
-	box-shadow: rgba(0, 0, 0, 0.3) 0 1px 3px;
-	opacity: 88%;
-	cursor: pointer;
-	will-change: opacity;
-	transition: opacity 450ms;
-	&:hover {
-		opacity: 100%;
-		transition: opacity 150ms;
-		font-weight: 600;
-	}
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0);
+    transition: background 150ms;
+    border-radius: 8px;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    &::after {
+      background: rgba(0,0,0,0.08);
+    }
+  }
 `;
 
-export const AddBoard = styled(Board)`
-	background-color: transparent;
-	background-image: linear-gradient(to right, #0b486b 0%, #f56217 51%, #0b486b 100%);
-	font-size: 1.2rem;
-	transition: 2s;
-	opacity: 65%;
-	background-size: 200% auto;
-	color: white;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	text-decoration: none;
-	font-weight: 600;
-	&:hover {
-		background-position: right center;
-		color: #fff;
-		transition: 400ms ease-in;
-	}
+export const AddBoard = styled.div`
+  width: 100%;
+  height: 100px;
+  border-radius: 8px;
+  border: 2px dashed #c1c7d0;
+  background: transparent;
+  color: #5e6c84;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 150ms, color 150ms, border-color 150ms;
+
+  &:hover {
+    background: #e6f2fb;
+    color: #0079bf;
+    border-color: #0079bf;
+  }
 `;
+
+// Keep these exports for backward compat if used elsewhere
+export const Title = SectionTitle;
+export const Wrapper = MainContent;
